@@ -36,10 +36,14 @@ export default function Navigation() {
           <Link href="/learn" className="text-white hover:text-blue-200">
             Learn More
           </Link>
+          <Link href="/messages" className="text-white hover:text-blue-200">
+            Messages
+          </Link>
           <button
             onClick={handleLogout}
             className="text-white hover:text-blue-200"
           >
+          
             Logout
           </button>
         </div>
