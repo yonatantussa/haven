@@ -6,12 +6,15 @@ from database import db, init_db
 from auth import create_token
 import os
 from dotenv import load_dotenv
+import google.generativeai as genai
+import traceback
 
 # Load environment variables
 load_dotenv()
 
 # Create the Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Configure the app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///haven.db'  # Uses SQLite for simplicity
@@ -19,7 +22,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'fallback-secret-key')  # Use environment variable, with a fallback
 
 # Initialize extensions with the app
-CORS(app)
 init_db(app)
 jwt = JWTManager(app)
 
@@ -54,6 +56,32 @@ def signup():
 def protected():
     current_user_id = get_jwt_identity()
     return jsonify(logged_in_as=current_user_id), 200
+
+# Google Gemini API integration
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+model = genai.GenerativeModel('gemini-pro')
+
+# Add this new route
+@app.route('/api/chat', methods=['POST'])
+@jwt_required()  # This ensures the route is protected
+def chat():
+    data = request.json
+    user_message = data.get('message')
+    
+    if not user_message:
+        return jsonify({"error": "No message provided"}), 400
+
+    # Configure the generative AI model
+    genai.configure(api_key=os.environ.get("GOOGLE_AI_API_KEY"))
+    model = genai.GenerativeModel('gemini-pro')
+
+    # Generate response
+    response = model.generate_content(user_message)
+
+    if response.text:
+        return jsonify({"response": response.text})
+    else:
+        return jsonify({"error": "No response generated"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import AuthenticatedLayout from '../components/AuthenticatedLayout';
+import ChatbotButton from '../components/ChatbotButton';
 
 const disasterInfo = [
   {
@@ -28,10 +29,15 @@ const disasterInfo = [
 
 export default function LearnMore() {
   const [expandedCard, setExpandedCard] = useState(null);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
 
   return (
     <AuthenticatedLayout>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative">
         <h1 className="text-3xl font-bold mb-8">Learn About Natural Disasters</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {disasterInfo.map((disaster, index) => (
@@ -53,6 +59,7 @@ export default function LearnMore() {
             </div>
           ))}
         </div>
+        <ChatbotButton isOpen={isChatbotOpen} toggleChatbot={toggleChatbot} />
       </div>
     </AuthenticatedLayout>
   );
