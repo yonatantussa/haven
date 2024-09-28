@@ -51,3 +51,4 @@ class Conversation(db.Model):
     # Sender and receiver relationships
     sender = db.relationship('User', foreign_keys=[sender_id], backref='started_conversations', lazy=True)
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_conversations', lazy=True)
+

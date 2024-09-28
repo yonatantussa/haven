@@ -1,107 +1,161 @@
 'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import AuthenticatedLayout from '../components/AuthenticatedLayout';
 
-import { useState, useEffect } from 'react';
-import ChatInterface from '../components/ChatInterface';
-import { FaSearch } from 'react-icons/fa';
+export default function OfferShelter() {
+  const [formData, setFormData] = useState({
+    name: '',
+    address: '',
+    city: '',
+    state: 'FL',
+    zipCode: '',
+    availableSpots: 1,
+    description: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
-export default function MessagesPage() {
-  const [conversations, setConversations] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
-  useEffect(() => {
-    // Sample conversations and messages
-    const sampleConversations = [
-      {
-        id: 1,
-        name: 'John Doe',
-        lastMessage: 'Thanks for your help with the donation!',
-        timestamp: '10:30 AM',
-        messages: [
-          { id: 1, sender_id: 2, content: "Hi there! I saw your post about needing blankets.", sent_at: "2023-06-10T10:00:00Z" },
-          { id: 2, sender_id: 1, content: "Yes, we're in need of about 50 blankets for the homeless shelter.", sent_at: "2023-06-10T10:05:00Z" },
-          { id: 3, sender_id: 2, content: "I have 20 blankets I can donate. Where should I drop them off?", sent_at: "2023-06-10T10:10:00Z" },
-          { id: 4, sender_id: 1, content: "That's fantastic! You can bring them to 123 Main St. Thank you so much!", sent_at: "2023-06-10T10:15:00Z" },
-          { id: 5, sender_id: 2, content: "Great, I'll drop them off tomorrow. Happy to help!", sent_at: "2023-06-10T10:20:00Z" },
-          { id: 6, sender_id: 1, content: "Thanks for your help with the donation!", sent_at: "2023-06-10T10:30:00Z" },
-        ]
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        lastMessage: 'The canned goods have been delivered.',
-        timestamp: 'Yesterday',
-        messages: [
-          { id: 1, sender_id: 1, content: "Hello Jane, do you have any canned goods to donate?", sent_at: "2023-06-09T14:00:00Z" },
-          { id: 2, sender_id: 2, content: "Hi! Yes, I have about 100 cans. Where are they needed?", sent_at: "2023-06-09T14:30:00Z" },
-          { id: 3, sender_id: 1, content: "That's wonderful! We need them at the food bank on 456 Oak St.", sent_at: "2023-06-09T14:35:00Z" },
-          { id: 4, sender_id: 2, content: "Perfect, I'll have them delivered tomorrow.", sent_at: "2023-06-09T14:40:00Z" },
-          { id: 5, sender_id: 2, content: "The canned goods have been delivered.", sent_at: "2023-06-10T09:00:00Z" },
-        ]
-      },
-      {
-        id: 3,
-        name: 'Local Shelter',
-        lastMessage: 'We still need volunteers for next week.',
-        timestamp: '2 days ago',
-        messages: [
-          { id: 1, sender_id: 2, content: "Hello! We're looking for volunteers for next week's event.", sent_at: "2023-06-08T11:00:00Z" },
-          { id: 2, sender_id: 1, content: "Hi there! What kind of help do you need?", sent_at: "2023-06-08T11:30:00Z" },
-          { id: 3, sender_id: 2, content: "We need people to help serve meals and organize donations.", sent_at: "2023-06-08T11:35:00Z" },
-          { id: 4, sender_id: 1, content: "I can help with organizing donations. What day and time?", sent_at: "2023-06-08T11:40:00Z" },
-          { id: 5, sender_id: 2, content: "Great! We need help on Tuesday from 2-6 PM. Can you make it?", sent_at: "2023-06-08T11:45:00Z" },
-          { id: 6, sender_id: 1, content: "Tuesday works for me. I'll be there!", sent_at: "2023-06-08T11:50:00Z" },
-          { id: 7, sender_id: 2, content: "Wonderful! See you then. We still need volunteers for next week.", sent_at: "2023-06-08T11:55:00Z" },
-        ]
-      },
-    ];
-
-    setConversations(sampleConversations);
-    setCurrentUser({ id: 1, username: 'CurrentUser' });
-  }, []);
-
-  const filteredConversations = conversations.filter(conv =>
-    conv.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess(false);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offer-shelter`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setSuccess(true);
+        setFormData({
+          name: '',
+          address: '',
+          city: '',
+          state: 'FL',
+          zipCode: '',
+          availableSpots: 1,
+          description: '',
+        });
+        setTimeout(() => router.push('/shelter'), 2000);
+      } else {
+        const data = await response.json();
+        setError(data.message || 'An error occurred while submitting your offer.');
+      }
+    } catch (error) {
+      setError('Network error. Please try again.');
+    }
+  };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Messages</h2>
-          <div className="relative">
+    <AuthenticatedLayout>
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-bold mb-8">Offer Your Home as Shelter</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {success && <p className="text-green-500 mb-4">Your offer has been submitted successfully! Redirecting...</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block mb-1">Name:</label>
             <input
               type="text"
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
             />
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           </div>
-        </div>
-        <div className="flex-1 overflow-y-auto">
-          {filteredConversations.map(conv => (
-            <div
-              key={conv.id}
-              className={`p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition duration-150 ease-in-out ${
-                selectedConversation?.id === conv.id ? 'bg-blue-50' : ''
-              }`}
-              onClick={() => setSelectedConversation(conv)}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold text-gray-800">{conv.name}</h3>
-                <span className="text-sm text-gray-500">{conv.timestamp}</span>
-              </div>
-              <p className="text-sm text-gray-600 truncate">{conv.lastMessage}</p>
-            </div>
-          ))}
-        </div>
+          <div>
+            <label htmlFor="address" className="block mb-1">Address:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="city" className="block mb-1">City:</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="state" className="block mb-1">State:</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
+              readOnly
+            />
+          </div>
+          <div>
+            <label htmlFor="zipCode" className="block mb-1">Zip Code:</label>
+            <input
+              type="text"
+              id="zipCode"
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="availableSpots" className="block mb-1">Available Spots:</label>
+            <input
+              type="number"
+              id="availableSpots"
+              name="availableSpots"
+              value={formData.availableSpots}
+              onChange={handleChange}
+              required
+              min="1"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="description" className="block mb-1">Description:</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+              rows="4"
+            ></textarea>
+          </div>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Submit Offer
+          </button>
+        </form>
       </div>
-      <div className="w-2/3">
-        <ChatInterface conversation={selectedConversation} currentUser={currentUser} />
-      </div>
-    </div>
+    </AuthenticatedLayout>
   );
 }

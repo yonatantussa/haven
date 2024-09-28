@@ -39,9 +39,6 @@ export default function Navigation() {
           <Link href="/messages" className="text-white hover:text-blue-200">
             Messages
           </Link>
-          <Link href="/recent_news" className="text-white hover:text-blue-200">
-            Recent News
-          </Link>
           <button
             onClick={handleLogout}
             className="text-white hover:text-blue-200"

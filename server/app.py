@@ -14,7 +14,8 @@ load_dotenv()
 
 # Create the Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"], "allow_headers": "*"}})
+
 
 # Configure the app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///haven.db'  # Uses SQLite for simplicity
@@ -82,6 +83,30 @@ def chat():
         return jsonify({"response": response.text})
     else:
         return jsonify({"error": "No response generated"}), 500
+
+"""
+@app.route('/users', methods=['GET'])
+@jwt_required()
+def get_users():
+    current_user_id = get_jwt_identity()  # Get the ID of the current user from JWT
+    print(current_user_id)
+    users = User.query.filter(User.id != current_user_id).all()  # Exclude the current user
+    user_list = [{"id": user.id, "name": user.name, "email": user.email} for user in users]
+    
+    return jsonify(user_list)
+"""
+
+users = [
+    {'id': 1, 'username': 'UserOne'},
+    {'id': 2, 'username': 'UserTwo'},
+    {'id': 3, 'username': 'UserThree'}
+]
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    return jsonify(users)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
