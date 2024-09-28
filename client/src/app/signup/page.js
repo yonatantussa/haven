@@ -28,7 +28,7 @@ export default function Signup() {
         setError(errorData.message || 'Signup failed');
       }
     } catch (error) {
-      console.error('Network error:', error);
+      console.error('Network  error:', error);
       setError('Network error. Please try again.');
     }
   };

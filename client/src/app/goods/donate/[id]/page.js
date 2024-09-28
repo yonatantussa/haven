@@ -1,51 +1,61 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import AuthenticatedLayout from '../../../components/AuthenticatedLayout';
 
 export default function DonateSingleItem({ params }) {
   const [request, setRequest] = useState(null);
   const [donationAmount, setDonationAmount] = useState(1);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const currentRequests = JSON.parse(searchParams.get('currentRequests') || '[]');
-    const currentRequest = currentRequests.find(r => r.id.toString() === params.id);
+    // Fetching existing requests from local storage
+    const existingRequests = JSON.parse(localStorage.getItem('currentRequests') || '[]');
+    console.log('Existing Requests:', existingRequests); // Debugging output
+    const currentRequest = existingRequests.find(r => r.id.toString() === params.id);
+
+    // If the request is found, set it; otherwise, set dummy data
     if (currentRequest) {
+      console.log('Current Request Found:', currentRequest); // Debugging output
       setRequest(currentRequest);
     } else {
-      // Fallback to dummy data if not found
       setRequest({
         id: params.id,
         organization: 'Unknown',
         item: 'Unknown',
         requested: 1000,
         received: 0,
-        description: 'No description available.'
+        description: 'No description available.',
       });
     }
-  }, [params.id, searchParams]);
+  }, [params.id]);
 
   const handleDonate = async (e) => {
     e.preventDefault();
-    console.log('Donating:', { requestId: params.id, amount: donationAmount });
-    
-    // Updates the received amount
+
+    // Update the received amount based on the donation
     const updatedRequest = {
       ...request,
-      received: request.received + donationAmount
+      received: request.received + donationAmount,
     };
-    
-    setRequest(updatedRequest);
 
+    // Update local storage with the new request data
+    const existingRequests = JSON.parse(localStorage.getItem('currentRequests') || '[]');
+    const updatedRequests = existingRequests.map(r =>
+      r.id.toString() === updatedRequest.id ? updatedRequest : r
+    );
+    localStorage.setItem('currentRequests', JSON.stringify(updatedRequests));
+
+    // Simulate a delay for donation processing
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // After successful donation, redirect to the donate page
-    router.push('/goods/donate');
-  };
+    // Redirect to the donate page with updated values as query parameters
+    router.push(`/goods/donate?updatedId=${updatedRequest.id}&received=${updatedRequest.received}`);
+};
 
+
+  // Loading state if request is not set
   if (!request) return <div>Loading...</div>;
 
   return (
@@ -70,7 +80,7 @@ export default function DonateSingleItem({ params }) {
                 type="number"
                 id="amount"
                 value={donationAmount}
-                onChange={(e) => setDonationAmount(parseInt(e.target.value))}
+                onChange={(e) => setDonationAmount(Math.max(1, parseInt(e.target.value)))}
                 min="1"
                 max={request.requested - request.received}
                 required
