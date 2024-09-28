@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import ChatInterface from '../components/ChatInterface';
 import { FaSearch } from 'react-icons/fa';
+import Navigation from '../components/Navigation';
 export default function MessagesPage() {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
@@ -9,6 +10,7 @@ export default function MessagesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
     // Sample conversations and messages
+    
     const sampleConversations = [
       {
         id: 1,
@@ -60,6 +62,8 @@ export default function MessagesPage() {
     conv.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
+    <>
+    <Navigation />
     <div className="flex h-screen bg-gray-100">
       <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200">
@@ -97,5 +101,6 @@ export default function MessagesPage() {
         <ChatInterface conversation={selectedConversation} currentUser={currentUser} />
       </div>
     </div>
+    </>
   );
 }
