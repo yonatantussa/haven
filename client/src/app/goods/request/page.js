@@ -25,11 +25,19 @@ export default function RequestGoods() {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log('Submitting request:', formData);
+  //   // After successful submission, redirect to the goods page
+  //   router.push('/goods');
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Submitting request:', formData);
-    // After successful submission, redirect to the goods page
-    router.push('/goods');
+  
+    // Pass form data to DonateGoods page
+    const encodedFormData = encodeURIComponent(JSON.stringify(formData));
+    router.push(`/goods/donate?formData=${encodedFormData}`);
   };
 
   return (
