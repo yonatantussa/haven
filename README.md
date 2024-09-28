@@ -1,5 +1,5 @@
 # Haven
-![haven-cropped](https://github.com/user-attachments/assets/667b1d57-4ab7-46eb-8086-b3ef630fd57a)
+![haven-cropped](https://github.com/user-attachments/assets/7b11145d-efb9-4826-aa76-3a46fc286f3f)
 
 🌟 Inspiration
 
