@@ -1,4 +1,5 @@
 
+
 // 'use client';
 
 // import { useState, useEffect } from 'react';
@@ -21,6 +22,7 @@
 
 //     if (selectedRequest) {
 //       setRequest(selectedRequest);
+//       setDonationAmount(1); // Reset donation amount when loading a new request
 //     }
 //   }, []);
 
@@ -49,6 +51,9 @@
 //   // Check if the donation is complete
 //   const isDonationComplete = request.received >= request.requested;
 
+//   // Generate options for donation amount based on the requested amount
+//   const donationOptions = Array.from({ length: request.requested  }, (_, index) => index + 1);
+
 //   return (
 //     <div className="container mx-auto px-4 py-8">
 //       <h1 className="text-3xl font-bold mb-8">Donate Item</h1>
@@ -70,12 +75,19 @@
 //             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500"
 //             disabled={isDonationComplete} // Disable the select input if donation is complete
 //           >
-//             {/* Option values can be adjusted as needed */}
-//             {[1, 2, 3, 4, 5].map(amount => (
+//             {/* Use the dynamically generated options */}
+//             {donationOptions.map(amount => (
 //               <option key={amount} value={amount}>{amount}</option>
 //             ))}
 //           </select>
 //         </div>
+
+//         {/* Message to display when the donation is complete */}
+//         {isDonationComplete && (
+//           <div className="mb-4 text-red-600 font-semibold">
+//             You have already received the requested amount for this item.
+//           </div>
+//         )}
         
 //         <button
 //           onClick={handleConfirmDonation}
@@ -110,6 +122,7 @@ export default function DonateSingleItem() {
 
     if (selectedRequest) {
       setRequest(selectedRequest);
+      setDonationAmount(1); // Reset donation amount when loading a new request
     }
   }, []);
 
@@ -127,6 +140,15 @@ export default function DonateSingleItem() {
     // Save the updated requests back to local storage
     localStorage.setItem('currentRequests', JSON.stringify(updatedRequests));
 
+    // Refresh the request state to update options
+    setRequest(prevRequest => ({
+      ...prevRequest,
+      received: prevRequest.received + donationAmount // Update received amount
+    }));
+
+    // Optionally reset donationAmount if you want to clear the selection
+    setDonationAmount(1); 
+
     // Redirect back to the DonateGoods page
     router.push('/goods/donate');
   };
@@ -135,8 +157,12 @@ export default function DonateSingleItem() {
     return <div>Loading...</div>; // Or a loading spinner
   }
 
-  // Check if the donation is complete
-  const isDonationComplete = request.received >= request.requested;
+  // Calculate remaining amount and check if the donation is complete
+  const remainingAmount = request.requested - request.received;
+  const isDonationComplete = remainingAmount <= 0;
+
+  // Generate options for donation amount based on the remaining amount
+  const donationOptions = Array.from({ length: remainingAmount }, (_, index) => index + 1);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -159,8 +185,8 @@ export default function DonateSingleItem() {
             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500"
             disabled={isDonationComplete} // Disable the select input if donation is complete
           >
-            {/* Option values can be adjusted as needed */}
-            {[1, 2, 3, 4, 5].map(amount => (
+            {/* Use the dynamically generated options */}
+            {donationOptions.map(amount => (
               <option key={amount} value={amount}>{amount}</option>
             ))}
           </select>
