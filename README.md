@@ -74,18 +74,6 @@ Other Tools: Git, Docker, etc.
 🌐 Connect with Us
 
 For more details, visit our website or follow us on social media:
-**Set up environment variables:**
-   Create a `.env` file in the root directory and add the following:
-    ```
-    SECRET_KEY=your_secret_key
-    DATABASE_URL=sqlite:///../instance/site.db
-    TWILIO_ACCOUNT_SID=your_twilio_account_sid
-    TWILIO_API_KEY_SID=your_twilio_api_key_sid
-    TWILIO_API_KEY_SECRET=your_twilio_api_key_secret
-    OPENAI_API_KEY=your_openai_api_key
-    JDOODLE_CLIENT_ID=your_jdoodle_client_id
-    JDOODLE_CLIENT_SECRET=your_jdoodle_client_secret
-    ```
     
 Twitter
 LinkedIn
