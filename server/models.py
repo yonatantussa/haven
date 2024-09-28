@@ -25,5 +25,29 @@ class Message(db.Model):
     sent_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_read = db.Column(db.Boolean, default=False)
 
+    # Relationship to conversation
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id', ondelete='CASCADE'), nullable=False)
+    conversation = db.relationship('Conversation', back_populates='messages')
+
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages', lazy=True)
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages', lazy=True)
+
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationship with messages in this conversation
+    messages = db.relationship('Message', back_populates='conversation', lazy='dynamic', cascade="all, delete-orphan")
+
+    # Last message tracking
+    last_message_id = db.Column(db.Integer, db.ForeignKey('messages.id', ondelete='SET NULL'))
+    last_message = db.relationship('Message', foreign_keys=[last_message_id], post_update=True)
+
+    # Sender and receiver relationships
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='started_conversations', lazy=True)
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_conversations', lazy=True)
