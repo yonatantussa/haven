@@ -1,4 +1,5 @@
 # Haven
+![haven-cropped](https://github.com/user-attachments/assets/667b1d57-4ab7-46eb-8086-b3ef630fd57a)
 
 🌟 Inspiration
 
