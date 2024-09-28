@@ -74,7 +74,7 @@ Other Tools: Git, Docker, etc.
 🌐 Connect with Us
 
 For more details, visit our website or follow us on social media:
-4. **Set up environment variables:**
+**Set up environment variables:**
    Create a `.env` file in the root directory and add the following:
     ```
     SECRET_KEY=your_secret_key
