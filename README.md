@@ -11,15 +11,17 @@ Haven allows nonprofits and individuals in need to:
 
 Request goods and supplies.
 Find temporary shelters quickly and easily.
+
 💻 How We Built It
 
 We built Haven using the following technologies:
 
 Technology	Description
-Frontend	React, Next.js
-Backend	Python, Flask
-Database	SQLite
-🏗️ How to Run It Locally
+Frontend:    React, Next.js
+Backend:    Python, Flask
+Database:    SQLite
+
+🏗️ How to Run Locally
 
 To run Haven locally, follow these steps:
 
