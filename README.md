@@ -1,5 +1,5 @@
 # Haven
-![haven-cropped](https://github.com/user-attachments/assets/565269bb-da8a-40e7-9db8-10e38f81553c)
+![haven-cropped](https://github.com/user-attachments/assets/6c6a670f-ea25-41b0-9572-8eb59cb171a9)
 
 🌟 Inspiration
 
@@ -11,15 +11,17 @@ Haven allows nonprofits and individuals in need to:
 
 Request goods and supplies.
 Find temporary shelters quickly and easily.
+
 💻 How We Built It
 
 We built Haven using the following technologies:
 
 Technology	Description
-Frontend	React, Next.js
-Backend	Python, Flask
-Database	SQLite
-🏗️ How to Run It Locally
+Frontend:    React, Next.js
+Backend:    Python, Flask
+Database:    SQLite
+
+🏗️ How to Run Locally
 
 To run Haven locally, follow these steps:
 
@@ -71,9 +73,3 @@ Languages: Python, JavaScript
 Frameworks/Libraries: Flask, React, Next.js
 Database: SQLite
 Other Tools: Git, Docker, etc.
-🌐 Connect with Us
-
-For more details, visit our website or follow us on social media:
-    
-Twitter
-LinkedIn
