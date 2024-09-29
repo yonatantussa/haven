@@ -67,6 +67,10 @@ export default function OfferShelter() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Offer Your Home as Shelter</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6" role="alert">
+          <p className="font-bold">Sponsored Incentive</p>
+          <p>Our corporate partner, Google.org, is offering $500 to anyone who hosts evacuees. Help your community and get rewarded!</p>
+        </div>
         {success && <p className="text-green-500 mb-4">Your offer has been submitted successfully! Redirecting...</p>}
         <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
           <div>

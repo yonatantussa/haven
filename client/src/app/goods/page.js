@@ -22,7 +22,10 @@ export default function Goods() {
           <h1 className="text-4xl font-bold mb-4">Request or Donate Goods</h1>
           <p className="text-xl">Essential Supplies for Those in Need</p>
         </div>
-
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+          <p className="font-bold">Host Incentive Program</p>
+          <p>Did you know? Google.org is offering $500 to anyone who hosts Hurricane Helene evacuees. Visit our Shelter page to learn more!</p>
+        </div>
         {/* Two cards below */}
         <div className="grid md:grid-cols-2 gap-8">
           {/* Request Goods Card */}

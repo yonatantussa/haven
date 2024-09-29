@@ -54,7 +54,7 @@ export default function LandingPage() {
             <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
               <Image src="/host.png" alt="Host Icon" width={64} height={64} className="mb-4" />
               <h3 className="text-xl font-semibold mb-2">Host</h3>
-              <p className="text-center mb-4">Offer your space to those in need of shelter.</p>
+              <p className="text-center mb-4">Offer your space to those in need of shelter. Get $500 on behalf of Google.org as a thank you!</p>
               <Link href="/host" className="mt-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                 Become a Host
               </Link>
