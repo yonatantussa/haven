@@ -1,5 +1,6 @@
 # Haven
 ![haven-cropped](https://github.com/user-attachments/assets/565269bb-da8a-40e7-9db8-10e38f81553c)
+https://devpost.com/software/haven-87c0vm?ref_content=user-portfolio&ref_feature=in_progress
 
 🌟 Inspiration
 
@@ -73,9 +74,3 @@ Languages: Python, JavaScript
 Frameworks/Libraries: Flask, React, Next.js
 Database: SQLite
 Other Tools: Git, Docker, etc.
-🌐 Connect with Us
-
-For more details, visit our website or follow us on social media:
-    
-Twitter
-LinkedIn
