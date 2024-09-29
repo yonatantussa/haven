@@ -1,6 +1,5 @@
 # Haven
 ![haven-cropped](https://github.com/user-attachments/assets/6c6a670f-ea25-41b0-9572-8eb59cb171a9)
-https://devpost.com/software/haven-87c0vm?ref_content=user-portfolio&ref_feature=in_progress
 
 🌟 Inspiration
 
