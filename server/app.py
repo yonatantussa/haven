@@ -6,7 +6,6 @@ from database import db, init_db
 from auth import create_token
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
 import traceback
 
 # Load environment variables
@@ -59,8 +58,10 @@ def protected():
     return jsonify(logged_in_as=current_user_id), 200
 
 # Google Gemini API integration
+"""
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel('gemini-pro')
+"""
 
 # Add this new route
 @app.route('/api/chat', methods=['POST'])
