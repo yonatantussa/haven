@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
-from models import User, Message
+from models import User, Message, Shelter
 from database import db, init_db
 from auth import create_token
 import os
@@ -84,29 +84,36 @@ def chat():
     else:
         return jsonify({"error": "No response generated"}), 500
 
-"""
-@app.route('/users', methods=['GET'])
+# Offer Your Home as Shelter functionality
+@app.route('/api/offer-shelter', methods=['POST'])
 @jwt_required()
-def get_users():
-    current_user_id = get_jwt_identity()  # Get the ID of the current user from JWT
-    print(current_user_id)
-    users = User.query.filter(User.id != current_user_id).all()  # Exclude the current user
-    user_list = [{"id": user.id, "name": user.name, "email": user.email} for user in users]
-    
-    return jsonify(user_list)
-"""
+def offer_shelter():
+    current_user_id = get_jwt_identity()
+    data = request.json
 
-users = [
-    {'id': 1, 'username': 'UserOne'},
-    {'id': 2, 'username': 'UserTwo'},
-    {'id': 3, 'username': 'UserThree'}
-]
+    new_shelter = Shelter(
+        user_id=current_user_id,
+        name=data['name'],
+        address=data['address'],
+        city=data['city'],
+        state=data['state'],
+        zip_code=data['zipCode'],
+        capacity=data['capacity'],
+        lat=data['lat'],
+        lng=data['lng']
+    )
 
-@app.route('/users', methods=['GET'])
-def get_users():
-    return jsonify(users)
+    db.session.add(new_shelter)
+    db.session.commit()
 
+    print(f"New shelter added: {new_shelter.to_dict()}")  # Add this line for debugging
 
+    return jsonify({"message": "Shelter offer submitted successfully"}), 201
+
+@app.route('/api/shelters', methods=['GET'])
+def get_shelters():
+    shelters = Shelter.query.order_by(Shelter.created_at.desc()).all()
+    return jsonify([shelter.to_dict() for shelter in shelters]), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

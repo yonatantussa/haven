@@ -8,21 +8,16 @@ export default function OfferShelter() {
     name: '',
     address: '',
     city: '',
-    state: 'FL',
+    state: '',
     zipCode: '',
-    availableSpots: 1,
-    description: '',
+    capacity: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -30,42 +25,50 @@ export default function OfferShelter() {
     setError('');
     setSuccess(false);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/offer-shelter`, {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('You must be logged in to offer shelter.');
+        return;
+      }
+
+      // Add dummy coordinates (you should replace this with actual geocoding)
+      const dummyLat = 28.538336 + (Math.random() - 0.5) * 0.1;
+      const dummyLng = -81.379234 + (Math.random() - 0.5) * 0.1;
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/offer-shelter`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          lat: dummyLat,
+          lng: dummyLng
+        }),
       });
       if (response.ok) {
         setSuccess(true);
-        setFormData({
-          name: '',
-          address: '',
-          city: '',
-          state: 'FL',
-          zipCode: '',
-          availableSpots: 1,
-          description: '',
-        });
-        setTimeout(() => router.push('/shelter'), 2000);
+        setTimeout(() => {
+          router.push('/shelter');
+        }, 3000);
       } else {
-        const data = await response.json();
-        setError(data.message || 'An error occurred while submitting your offer.');
+        const errorData = await response.json();
+        setError(errorData.message || 'An error occurred. Please try again.');
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      console.error('Error:', error);
+      setError('An error occurred. Please try again.');
     }
   };
 
   return (
     <AuthenticatedLayout>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Offer Your Home as Shelter</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">Your offer has been submitted successfully! Redirecting...</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
           <div>
             <label htmlFor="name" className="block mb-1">Name:</label>
             <input
@@ -112,7 +115,6 @@ export default function OfferShelter() {
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded"
-              readOnly
             />
           </div>
           <div>
@@ -128,30 +130,19 @@ export default function OfferShelter() {
             />
           </div>
           <div>
-            <label htmlFor="availableSpots" className="block mb-1">Available Spots:</label>
+            <label htmlFor="capacity" className="block mb-1">Capacity:</label>
             <input
               type="number"
-              id="availableSpots"
-              name="availableSpots"
-              value={formData.availableSpots}
+              id="capacity"
+              name="capacity"
+              value={formData.capacity}
               onChange={handleChange}
               required
               min="1"
               className="w-full px-3 py-2 border rounded"
             />
           </div>
-          <div>
-            <label htmlFor="description" className="block mb-1">Description:</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              rows="4"
-            ></textarea>
-          </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
             Submit Offer
           </button>
         </form>

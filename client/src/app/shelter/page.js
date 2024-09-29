@@ -161,8 +161,36 @@ export default function Shelter() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   });
 
+  const fetchShelters = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters`);
+      if (response.ok) {
+        const shelters = await response.json();
+        return shelters.map(shelter => ({
+          id: shelter.id,
+          lat: shelter.lat,
+          lng: shelter.lng,
+          type: 'home',
+          name: shelter.name,
+          availableSpots: shelter.capacity
+        }));
+      } else {
+        console.error('Failed to fetch shelters');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching shelters:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
-    setLocations(dummyLocations);
+    const loadLocations = async () => {
+      const fetchedShelters = await fetchShelters();
+      setLocations([...dummyLocations, ...fetchedShelters]);
+    };
+
+    loadLocations();
   }, []);
 
   const mapOptions = {

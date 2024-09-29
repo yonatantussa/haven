@@ -15,6 +15,22 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Sender and receiver relationships
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='started_conversations', lazy=True)
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_conversations', lazy=True)
+
+    # Relationship with messages in this conversation
+    messages = db.relationship('Message', back_populates='conversation', lazy='dynamic', cascade="all, delete-orphan")
+
 class Message(db.Model):
     __tablename__ = 'messages'
 
@@ -32,23 +48,31 @@ class Message(db.Model):
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages', lazy=True)
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages', lazy=True)
 
-class Conversation(db.Model):
-    __tablename__ = 'conversations'
+class Shelter(db.Model):
+    __tablename__ = 'shelters'
 
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(50), nullable=False)
+    zip_code = db.Column(db.String(20), nullable=False)
+    capacity = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationship with messages in this conversation
-    messages = db.relationship('Message', back_populates='conversation', lazy='dynamic', cascade="all, delete-orphan")
-
-    # Last message tracking
-    last_message_id = db.Column(db.Integer, db.ForeignKey('messages.id', ondelete='SET NULL'))
-    last_message = db.relationship('Message', foreign_keys=[last_message_id], post_update=True)
-
-    # Sender and receiver relationships
-    sender = db.relationship('User', foreign_keys=[sender_id], backref='started_conversations', lazy=True)
-    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_conversations', lazy=True)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'city': self.city,
+            'state': self.state,
+            'zip_code': self.zip_code,
+            'capacity': self.capacity,
+            'lat': self.lat,
+            'lng': self.lng
+        }
 
