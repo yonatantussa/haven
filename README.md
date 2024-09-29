@@ -1,5 +1,5 @@
 # Haven
-![haven-cropped](https://github.com/user-attachments/assets/565269bb-da8a-40e7-9db8-10e38f81553c)
+![haven-cropped](https://github.com/user-attachments/assets/6c6a670f-ea25-41b0-9572-8eb59cb171a9)
 
 https://devpost.com/software/haven-87c0vm?ref_content=user-portfolio&ref_feature=in_progress
 
