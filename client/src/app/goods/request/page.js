@@ -25,29 +25,33 @@ export default function RequestGoods() {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log('Submitting request:', formData);
-  //   // After successful submission, redirect to the goods page
-  //   router.push('/goods');
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting request:', formData);
+    
+    // Create a copy of the form data
+    let submissionData = { ...formData };
+
+    // If organizationName is empty, use the contactPerson's name
+    if (!submissionData.organizationName.trim()) {
+      submissionData.organizationName = submissionData.contactPerson;
+    }
+
+    console.log('Submitting request:', submissionData);
   
     // Pass form data to DonateGoods page
-    const encodedFormData = encodeURIComponent(JSON.stringify(formData));
+    const encodedFormData = encodeURIComponent(JSON.stringify(submissionData));
     router.push(`/goods/donate?formData=${encodedFormData}`);
   };
 
   return (
     <AuthenticatedLayout>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Request Goods</h1>
+        <h1 className="text-3xl font-bold mb-2">Request Goods</h1>
+        <p className="text-gray-600 mb-6">For organizations and individuals in need of essential supplies</p>
         <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="organizationName">
-              Organization Name
+              Organization Name (Optional)
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -56,7 +60,6 @@ export default function RequestGoods() {
               name="organizationName"
               value={formData.organizationName}
               onChange={handleChange}
-              required
             />
           </div>
           <div className="mb-4">

@@ -19,7 +19,7 @@ export default function Goods() {
       <div className="container mx-auto px-4 py-8">
         {/* Large card at the top */}
         <div className="bg-blue-600 text-white rounded-lg shadow-lg p-8 mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4">Donate and Request Goods</h1>
+          <h1 className="text-4xl font-bold mb-4">Request or Donate Goods</h1>
           <p className="text-xl">Essential Supplies for Those in Need</p>
         </div>
 
@@ -31,7 +31,7 @@ export default function Goods() {
             <p className="mb-4">Are you an organization or individual in need of essential supplies? Submit a request for goods here.</p>
             <button
               onClick={handleRequestGoods}
-              className="w-full max-w-xs bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+              className="w-full max-w-xs bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
             >
               Request Goods
             </button>

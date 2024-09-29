@@ -3,14 +3,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/login');
   };
+
+  const isActive = (path) => pathname === path;
 
   return (
     <nav className="bg-gradient-to-r from-blue-800 to-blue-500 p-4 relative">
@@ -24,30 +28,36 @@ export default function Navigation() {
               className="object-contain"
             />
           </div>
-          <span className="text-white font-bold text-xl">Haven</span>
+          <span className="text-white font-bold text-3xl tracking-wide haven-text">
+            Haven
+          </span>
         </Link>
-        <div className="space-x-4">
-          <Link href="/goods" className="text-white hover:text-blue-200">
-            Goods
-          </Link>
-          <Link href="/shelter" className="text-white hover:text-blue-200">
-            Shelter
-          </Link>
-          <Link href="/learn" className="text-white hover:text-blue-200">
-            Learn More
-          </Link>
-          <Link href="/messages" className="text-white hover:text-blue-200">
-            Messages
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="text-white hover:text-blue-200"
-          >
-          
-            Logout
-          </button>
+        <div className="flex-grow flex justify-center space-x-6">
+          <NavLink href="/goods" isActive={isActive('/goods')}>Goods</NavLink>
+          <NavLink href="/shelter" isActive={isActive('/shelter')}>Shelter</NavLink>
+          <NavLink href="/learn" isActive={isActive('/learn')}>Learn More</NavLink>
+          <NavLink href="/messages" isActive={isActive('/messages')}>Messages</NavLink>
         </div>
+        <button
+          onClick={handleLogout}
+          className="text-white hover:text-blue-200"
+        >
+          Logout
+        </button>
       </div>
     </nav>
+  );
+}
+
+function NavLink({ href, children, isActive }) {
+  return (
+    <Link 
+      href={href} 
+      className={`text-white hover:text-blue-200 ${
+        isActive ? 'border-b-2 border-white' : ''
+      }`}
+    >
+      {children}
+    </Link>
   );
 }
