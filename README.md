@@ -72,7 +72,12 @@ Expanding the platform to include more regions affected by disasters.
 
 🛠️ Built With
 
-Languages: Python, JavaScript
-Frameworks/Libraries: Flask, React, Next.js
-Database: SQLite
-Other Tools: Git, Docker, etc.
+Languages: Python, JavaScript</br>
+Frameworks/Libraries: Flask, React, Next.js</br>
+Database: SQLite</br>
+Other Tools: Git, Docker, etc.</br>
+<img width="1680" alt="Screenshot 2024-09-29 at 7 12 04 AM" src="https://github.com/user-attachments/assets/707ef2c0-ab7e-4b25-8411-80f972e19dda">
+
+<img width="1678" alt="Screenshot 2024-10-01 at 1 46 07 AM" src="https://github.com/user-attachments/assets/5d617ce3-92cf-4ed6-aac6-a24541c7a927">
+
+<img width="1680" alt="Screenshot 2024-09-29 at 7 11 36 AM" src="https://github.com/user-attachments/assets/f5a673f5-bf36-4c94-80ff-a14f32f3f025">
