@@ -69,9 +69,6 @@ A rating system for shelters and hosts.
 Expanding the platform to include more regions affected by disasters.
 
 ## 📸 Demo
-
-🛠️ Built With
-
 Languages: Python, JavaScript</br>
 Frameworks/Libraries: Flask, React, Next.js</br>
 Database: SQLite</br>
@@ -81,3 +78,5 @@ Other Tools: Git, Docker, etc.</br>
 <img width="1678" alt="Screenshot 2024-10-01 at 1 46 07 AM" src="https://github.com/user-attachments/assets/5d617ce3-92cf-4ed6-aac6-a24541c7a927">
 
 <img width="1680" alt="Screenshot 2024-09-29 at 7 11 36 AM" src="https://github.com/user-attachments/assets/f5a673f5-bf36-4c94-80ff-a14f32f3f025">
+
+## 🛠️ Built With
