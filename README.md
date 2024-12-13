@@ -46,12 +46,6 @@ You should now be able to access the application in your browser at http://local
 
 User Interface: Creating an interface that was simple yet powerful enough to handle both shelter and donation needs.
 User Privacy: Ensuring user privacy while displaying relevant information, especially with home locations.
-Verification System: Integrating a verification system for both hosts and guests while maintaining ease of use.
-## 🎉 Accomplishments That We're Proud Of
-
-Launched the platform successfully and received positive feedback from users.
-Connected multiple organizations with individuals in need of assistance.
-Developed a user-friendly interface that simplifies the process of requesting and offering help.
 
 ## 📚 What We Learned
 
@@ -64,7 +58,6 @@ Effective project management and teamwork strategies.
 Implementing additional features such as:
 Enhanced verification and security of user information.
 A rating system for shelters and hosts.
-Expanding the platform to include more regions affected by disasters.
 
 ## 📸 Demo
 <img width="1680" alt="Screenshot 2024-09-29 at 7 12 04 AM" src="https://github.com/user-attachments/assets/707ef2c0-ab7e-4b25-8411-80f972e19dda">
