@@ -44,7 +44,7 @@ You should now be able to access the application in your browser at http://local
 
 ## 🛠️ Challenges We Ran Into
 
-User Interface: Creating an interface that was simple yet powerful enough to handle both shelter and donation needs.
+User Interface: Creating an interface that was simple yet powerful enough to handle both shelter and donation needs.</br>
 User Privacy: Ensuring user privacy while displaying relevant information, especially with home locations.
 
 ## 📚 What We Learned
